@@ -21,6 +21,7 @@ import static org.opencv.imgcodecs.Imgcodecs.*;
 
 public class Main {
 
+    //Change this
     public static SerialPort serialPort = new SerialPort("/dev/cu.usbmodem14101");
 
     //Bolt sizes in ints
@@ -29,7 +30,7 @@ public class Main {
 
     public static JLabel image = new JLabel();
 
-    public static double fov = 71.6;
+    public static double fov = 45;
     public static double height = 5.2;
 
     static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
@@ -117,10 +118,10 @@ public class Main {
         frame.setSize(700, 500);
         frame.add(image);
 
-        VideoCapture cam = new VideoCapture(0);
+//        VideoCapture cam = new VideoCapture(0);
 
         Mat src = new Mat();
-        src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/test.jpg");
+        src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/Screw6.jpg");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -128,10 +129,10 @@ public class Main {
 
         VSub = 50;
         VAdd = 150;
-        SSub = 50;
-        SAdd = 100;
-        HSub = 0;
-        HAdd = 80;
+        SSub = 0;
+        SAdd = 255;
+        HSub = 50;
+        HAdd = 125;
 
         String text = "";
 
@@ -146,24 +147,24 @@ public class Main {
 
 
             if (splited.length >= 2){
-                VSub = Integer.parseInt(splited[0]);
-                VAdd = Integer.parseInt(splited[1]);
+                //VSub = Integer.parseInt(splited[0]);
+                //VAdd = Integer.parseInt(splited[1]);
 
-                //SSub = Integer.parseInt(splited[0]);
-                //SAdd = Integer.parseInt(splited[1]);
+                SSub = Integer.parseInt(splited[0]);
+                SAdd = Integer.parseInt(splited[1]);
 
                 //HSub = Integer.parseInt(splited[0]);
                 //HAdd = Integer.parseInt(splited[1]);
             }
 
             //read a frame from the video in
-            cam.read(src);
-            while(src.cols() == 0)
-                cam.read(src);
+//            cam.read(src);
+//            while(src.cols() == 0)
+//                cam.read(src);
 
 
 
-            //src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/test.jpg");
+            src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/Screw6.jpg");
 
 
             //Mats needed for image processing
@@ -173,7 +174,7 @@ public class Main {
             //Image filter values
 
             //resize the image to decrease the strain on the CPU
-            //Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
+            Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
 
 
             //make the high and low filter values
@@ -183,7 +184,7 @@ public class Main {
             //filter the image by Hue Saturation and Value then save the mask into dst
             Core.inRange(src, hsvLow, hsvHigh, dst);
 
-            //display(dst);
+            display(dst);
 
             //contour array lists
             ArrayList<MatOfPoint> contours1 = new ArrayList<MatOfPoint>();
@@ -230,6 +231,9 @@ public class Main {
                 //System.out.println(size);
 
                 if (size < 500) {
+                    contours2.remove(i);
+                }
+                else if(Imgproc.boundingRect(contours2.get(i)).x > 300){
                     contours2.remove(i);
                 }
             }
@@ -279,12 +283,12 @@ public class Main {
             //System.out.println(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
 
 
-            display(out);
+            //display(out);
 
 
 //            wait 100ms to make the video viewable instead of quickly blinking past
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
