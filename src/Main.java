@@ -26,8 +26,8 @@ public class Main {
     public static SerialPort serialPort = new SerialPort("/dev/cu.usbmodem14101");
 
     //Bolt sizes in ints
-    public static int[] sizing = new int[]{ 1,2,3,4,5,6};
-    public static double[] ARs = new double[]{1.0,2.0,3.0,4.0,5.0,6.0};
+    public static double[] sizing = new double[]{ 0.165, 0.295, 0.712, 0.985};
+    public static double[] ARs = new double[]{2.218, 1.831, 4.440, 5.1};
 
     public static JLabel image = new JLabel();
 
@@ -74,6 +74,15 @@ public class Main {
         return (bestInd+1) * 1000;
     }
 
+    public static double determineAR(double sizeX, double sizeY){
+                    double ARy = sizeX / sizeY;
+                    double ARx = sizeY / sizeX;
+
+                    double AR = (ARy > ARx) ? ARy : ARx;
+            return AR;
+    }
+
+
     public static void sendMessage(String msg){
 
         try {
@@ -94,12 +103,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        serialPort.openPort();
+        //serialPort.openPort();
 
         //System.load("/usr/local/Cellar/opencv/4.1.0_1/share/java/libopencv_java410.dylib");
 
         //VARS
-        double minSize = 200;
+        double minSize = 2000;
 
 
         JFrame frame = new JFrame("output");
@@ -115,7 +124,7 @@ public class Main {
         //cam.open(0);
 
         Mat src = new Mat();
-        src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/screw3.jpg");
+        src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/screw4.jpg");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -154,7 +163,7 @@ public class Main {
             //read a frame from the video in
             //cam.read(src);
 
-            src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/screw3.jpg");
+            src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/screw4.jpg");
 
 
             //Mats needed for image processing
@@ -251,6 +260,12 @@ public class Main {
                 if(Imgproc.minAreaRect(dank).size.area() > minSize) {
                     Point[] vertices = new Point[4];
                     Imgproc.minAreaRect(dank).points(vertices);
+                    //System.out.println(determineBolt(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols())) + " y = " + Double.toString(Imgproc.minAreaRect(dank).center.y));
+
+                    //System.out.println("Size = " + Double.toString(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols())) +
+                    //        " AR = " + determineAR(Imgproc.minAreaRect(dank).size.width, Imgproc.minAreaRect(dank).size.height) +
+                    //       " y = " + Double.toString(Imgproc.minAreaRect(dank).center.y));
+
                     for (int j = 0; j < 4; j++) {
                         Imgproc.line(out, vertices[j], vertices[(j + 1) % 4], new Scalar(0, 255, 0));
                     }
@@ -268,8 +283,8 @@ public class Main {
             //System.out.println("yPosFarRight = " + Double.toString(furthestRightY));
             //System.out.println("furthestRightBoltSize = " + Double.toString(furthestRightBolt) + (Double.toString(furthestRight/3)));
 
-            sendMessage(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
-            System.out.println(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
+            //sendMessage(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
+            //System.out.println(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
 
 
 
