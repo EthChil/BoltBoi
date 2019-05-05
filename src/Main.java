@@ -1,7 +1,11 @@
+import jssc.SerialPortException;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
+import java.io.*;
+import java.util.*;
+import jssc.SerialPort;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -10,13 +14,25 @@ import java.awt.image.WritableRaster;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import static org.opencv.imgcodecs.Imgcodecs.imdecode;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 
+
+
 public class Main {
 
+    public static SerialPort serialPort = new SerialPort("/dev/cu.usbmodem14101");
+
+    //Bolt sizes in ints
+    public static int[] sizing = new int[]{ 1,2,3,4,5,6};
+    public static double[] ARs = new double[]{1.0,2.0,3.0,4.0,5.0,6.0};
+
     public static JLabel image = new JLabel();
+
+    public static double fov = 45;
+    public static double height = 5;
 
     //static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
     static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
@@ -34,12 +50,56 @@ public class Main {
         image.repaint();
     }
 
+    public static double calcSize(double pix, double w){
+        double bottom = (Math.tan(Math.toRadians(fov/2)) * height)*2;
+
+        //System.out.println(bottom);
+
+        double inchPerPx = bottom/w;
+
+        return pix * inchPerPx;
+    }
+
+    public static int determineBolt(double size){
+        double bestScore = 100000;
+        int bestInd = 0;
+
+        for(int i = 0; i < sizing.length; i++){
+            if(Math.abs(sizing[i] - size) < bestScore){
+                bestScore = Math.abs(sizing[i] - size);
+                bestInd = i;
+            }
+        }
+
+        return (bestInd+1) * 1000;
+    }
+
+    public static void sendMessage(String msg){
+
+        try {
+            //Open port
+            //We expose the settings. You can also use this line - serialPort.setParams(9600, 8, 1, 0);
+            serialPort.setParams(SerialPort.BAUDRATE_115200,
+                    SerialPort.DATABITS_8,
+                    SerialPort.STOPBITS_1,
+                    SerialPort.PARITY_NONE);
+            //Writes data to port
+            serialPort.writeBytes(msg.getBytes());
+
+        }
+        catch (SerialPortException ex) {
+            System.out.println(ex);
+        }
+    }
+
     public static void main(String[] args) throws Exception {
+
+        serialPort.openPort();
 
         //System.load("/usr/local/Cellar/opencv/4.1.0_1/share/java/libopencv_java410.dylib");
 
         //VARS
-        double maxAR = 1;
+        double minSize = 200;
 
 
         JFrame frame = new JFrame("output");
@@ -55,18 +115,18 @@ public class Main {
         //cam.open(0);
 
         Mat src = new Mat();
-        src = Imgcodecs.imread("screw.jpg");
+        src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/screw3.jpg");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int VSub, VAdd, SSub, SAdd, HSub, HAdd;
 
-        VSub = 50;
-        VAdd = 255;
-        SSub = 75;
-        SAdd = 200;
+        VSub = 0;
+        VAdd = 150;
+        SSub = 0;
+        SAdd = 90;
         HSub = 0;
-        HAdd = 255;
+        HAdd = 110;
 
         String text = "";
 
@@ -81,8 +141,8 @@ public class Main {
 
 
             if (splited.length >= 2){
-                VSub = Integer.parseInt(splited[0]);
-                VAdd = Integer.parseInt(splited[1]);
+                //VSub = Integer.parseInt(splited[0]);
+                //VAdd = Integer.parseInt(splited[1]);
 
                 //SSub = Integer.parseInt(splited[0]);
                 //SAdd = Integer.parseInt(splited[1]);
@@ -94,7 +154,7 @@ public class Main {
             //read a frame from the video in
             //cam.read(src);
 
-            src = Imgcodecs.imread("screw.jpg");
+            src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/screw3.jpg");
 
 
             //Mats needed for image processing
@@ -105,7 +165,7 @@ public class Main {
 
 
             //resize the image to decrease the strain on the CPU
-            Imgproc.resize(src, src, new Size(src.cols() / 2, src.rows() / 2));
+            Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
 
             //make the high and low filter values
             Scalar hsvLow = new Scalar(HSub, SSub, VSub);
@@ -113,6 +173,8 @@ public class Main {
 
             //filter the image by Hue Saturation and Value then save the mask into dst
             Core.inRange(src, hsvLow, hsvHigh, dst);
+
+            //display(dst);
 
             //contour array lists
             ArrayList<MatOfPoint> contours1 = new ArrayList<MatOfPoint>();
@@ -125,8 +187,8 @@ public class Main {
             Mat hierarchy = new Mat();
 
             //create contours around shapes in the mask
-            Imgproc.findContours(dst, contours1, hierarchy1, 2, 1, new Point(0, 0));
-            Imgproc.findContours(dst, contours2, hierarchy2, 2, 1, new Point(0, 0));
+            Imgproc.findContours(dst, contours1, hierarchy1, 2, 1);
+            Imgproc.findContours(dst, contours2, hierarchy2, 2, 1);
 
             //copy the original image to the output Mat that the contours are overlayed to
             src.copyTo(out);
@@ -146,9 +208,7 @@ public class Main {
 //                    }
 //            }
 
-            for (int i = 0; i < contours2.size(); i++) {
-                Imgproc.drawContours(out, contours2, i, new Scalar(255, 0, 255), 2, 8, hierarchy, 0, new Point());
-            }
+
 
 
 //            //Sort the contours by rough shape removing those that fall under a certain threshold
@@ -159,20 +219,59 @@ public class Main {
 //                    contours2.remove(i);
 //            }
 
-//            //variables for size based sorting
-//            double largest = 0;
-//            int index = -1;
-//
-//            //Sort out the biggest contours
-//            for (int i = 0; i < contours2.size(); i++) {
-//                double size = Imgproc.boundingRect(contours2.get(i)).width;
-//
-//                if (size > largest) {
-//                    index = i;
-//                    largest = size;
-//                }
-//
-//            }
+            //variables for size based sorting
+            double largest = 0;
+            int index = -1;
+
+            //Sort out the biggest contours
+            for (int i = 0; i < contours2.size(); i++) {
+                double size = Imgproc.boundingRect(contours2.get(i)).area();
+                //System.out.println(size);
+
+                if (size < 500) {
+                    contours2.remove(i);
+                }
+            }
+
+
+            for (int i = 0; i < contours2.size(); i++) {
+                Imgproc.drawContours(out, contours2, i, new Scalar(255, 0, 255), 1, 8, hierarchy, 0, new Point());
+            }
+
+
+            double furthestRight = 0;
+            double furthestRightY = 0;
+            int furthestRightBolt = 0;
+            int indexFurthestRight = 0;
+
+            for (int i = 0; i < contours2.size(); i++) {
+                MatOfPoint2f dank = new MatOfPoint2f();
+                contours2.get(i).convertTo(dank, CvType.CV_32F);
+
+                if(Imgproc.minAreaRect(dank).size.area() > minSize) {
+                    Point[] vertices = new Point[4];
+                    Imgproc.minAreaRect(dank).points(vertices);
+                    for (int j = 0; j < 4; j++) {
+                        Imgproc.line(out, vertices[j], vertices[(j + 1) % 4], new Scalar(0, 255, 0));
+                    }
+
+                    if(Imgproc.minAreaRect(dank).center.x > furthestRight){
+                        furthestRight = Imgproc.minAreaRect(dank).center.x;
+                        furthestRightBolt = determineBolt(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols()));
+                        furthestRightY = Imgproc.minAreaRect(dank).center.y;
+                        indexFurthestRight = i;
+                    }
+                }
+            }
+
+            //System.out.println("xPosFarRight = " + Double.toString(furthestRight));
+            //System.out.println("yPosFarRight = " + Double.toString(furthestRightY));
+            //System.out.println("furthestRightBoltSize = " + Double.toString(furthestRightBolt) + (Double.toString(furthestRight/3)));
+
+            sendMessage(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
+            System.out.println(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
+
+
 
 
 
@@ -198,11 +297,15 @@ public class Main {
 //
 //            }
 
+
             display(out);
 
-            //wait 100ms to make the video viewable instead of quickly blinking past
+
+
+
+//            wait 100ms to make the video viewable instead of quickly blinking past
             try {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

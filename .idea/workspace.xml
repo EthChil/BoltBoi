@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="BoltyBoi:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="74a3bbe5-84c6-44f6-93a8-28c6710d9590" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/out/production/BoltyBoi/Main.class" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/jssc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BoltyBoi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BoltyBoi.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BoltyBoi/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BoltyBoi/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -17,20 +25,26 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="57" column="32" lean-forward="true" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
+            <state relative-caret-position="330">
+              <caret line="29" column="71" lean-forward="true" selection-start-line="29" selection-start-column="71" selection-end-line="29" selection-end-column="71" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2515#2527#0" expanded="true" />
-                <element signature="e#2631#2643#0" expanded="true" />
-                <marker date="1557030858392" expanded="true" signature="4156:4688" ph="..." />
-                <marker date="1557030858392" expanded="false" signature="4876:6764" ph="..." />
+                <element signature="e#4914#4926#0" expanded="true" />
+                <element signature="e#5030#5042#0" expanded="true" />
+                <marker date="1557044639670" expanded="true" signature="5886:6418" ph="..." />
+                <marker date="1557044639670" expanded="true" signature="6421:10139" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>sys</find>
+      <find>syst</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,8 +56,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="width" value="835" />
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+    <option name="x" value="510" />
+    <option name="width" value="930" />
     <option name="height" value="900" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -52,7 +67,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -63,21 +78,39 @@
             <path>
               <item name="BoltBoi" type="b2602c69:ProjectViewProjectNode" />
               <item name="BoltBoi" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BoltBoi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BoltBoi" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BoltBoi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BoltBoi" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+              <item name="BoltyBoi_jar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BoltBoi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BoltBoi" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557030915934" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557044639729" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
@@ -122,17 +155,19 @@
       <option name="presentableId" value="Default" />
       <updated>1557016210460</updated>
       <workItem from="1557016213853" duration="3762000" />
-      <workItem from="1557023012795" duration="6671000" />
+      <workItem from="1557023012795" duration="7339000" />
+      <workItem from="1557031920362" duration="11428000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10433000" />
+    <option name="totallyTimeSpent" value="22529000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="835" height="900" extended-state="0" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25472888" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14663805" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -141,7 +176,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.22277227" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.21566264" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -171,14 +206,14 @@
     <entry file="jar:///usr/local/Cellar/opencv/HEAD-4fd00c1_4/share/OpenCV/java/opencv-310.jar!/org/opencv/videoio/VideoCapture.java" />
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="57" column="32" lean-forward="true" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
+        <state relative-caret-position="330">
+          <caret line="29" column="71" lean-forward="true" selection-start-line="29" selection-start-column="71" selection-end-line="29" selection-end-column="71" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2515#2527#0" expanded="true" />
-            <element signature="e#2631#2643#0" expanded="true" />
-            <marker date="1557030858392" expanded="true" signature="4156:4688" ph="..." />
-            <marker date="1557030858392" expanded="false" signature="4876:6764" ph="..." />
+            <element signature="e#4914#4926#0" expanded="true" />
+            <element signature="e#5030#5042#0" expanded="true" />
+            <marker date="1557044639670" expanded="true" signature="5886:6418" ph="..." />
+            <marker date="1557044639670" expanded="true" signature="6421:10139" ph="..." />
           </folding>
         </state>
       </provider>
@@ -189,10 +224,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>BoltyBoi:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -247,7 +284,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>opencv4</last-edited>
+          <last-edited>jssc</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
