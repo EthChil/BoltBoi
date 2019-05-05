@@ -121,18 +121,18 @@ public class Main {
 //        VideoCapture cam = new VideoCapture(0);
 
         Mat src = new Mat();
-        src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/Screw6.jpg");
+        src = Imgcodecs.imread("C:\\Users\\ethan\\Documents\\GitHub\\BoltBoi\\src\\Screw6.jpg");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int VSub, VAdd, SSub, SAdd, HSub, HAdd;
 
-        VSub = 50;
-        VAdd = 150;
-        SSub = 0;
-        SAdd = 255;
-        HSub = 50;
-        HAdd = 125;
+        VSub = 0;
+        VAdd = 255;
+        SSub = 25;
+        SAdd = 125;
+        HSub = 25;
+        HAdd = 110;
 
         String text = "";
 
@@ -150,11 +150,11 @@ public class Main {
                 //VSub = Integer.parseInt(splited[0]);
                 //VAdd = Integer.parseInt(splited[1]);
 
-                SSub = Integer.parseInt(splited[0]);
-                SAdd = Integer.parseInt(splited[1]);
+                //SSub = Integer.parseInt(splited[0]);
+                //SAdd = Integer.parseInt(splited[1]);
 
-                //HSub = Integer.parseInt(splited[0]);
-                //HAdd = Integer.parseInt(splited[1]);
+                HSub = Integer.parseInt(splited[0]);
+                HAdd = Integer.parseInt(splited[1]);
             }
 
             //read a frame from the video in
@@ -164,7 +164,7 @@ public class Main {
 
 
 
-            src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/Screw6.jpg");
+            src = Imgcodecs.imread("C:\\Users\\ethan\\Documents\\GitHub\\BoltBoi\\src\\Screw6.jpg");
 
 
             //Mats needed for image processing
@@ -176,13 +176,15 @@ public class Main {
             //resize the image to decrease the strain on the CPU
             Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
 
+            Mat lol = src.colRange(0, src.cols() - (src.cols()/3));
+
 
             //make the high and low filter values
             Scalar hsvLow = new Scalar(HSub, SSub, VSub);
             Scalar hsvHigh = new Scalar(HAdd, SAdd, VAdd);
 
             //filter the image by Hue Saturation and Value then save the mask into dst
-            Core.inRange(src, hsvLow, hsvHigh, dst);
+            Core.inRange(lol, hsvLow, hsvHigh, dst);
 
             display(dst);
 
@@ -201,7 +203,7 @@ public class Main {
             Imgproc.findContours(dst, contours2, hierarchy2, 2, 1);
 
             //copy the original image to the output Mat that the contours are overlayed to
-            src.copyTo(out);
+            lol.copyTo(out);
 
             //Sort contours based on aspect ratio
 //            for (int i = 0; i < contours2.size(); i++) {
