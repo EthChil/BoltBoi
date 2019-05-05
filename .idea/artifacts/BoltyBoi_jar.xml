@@ -4,7 +4,6 @@
     <root id="archive" name="BoltyBoi.jar">
       <element id="module-output" name="BoltyBoi" />
       <element id="extracted-dir" path="/usr/local/Cellar/opencv/4.1.0_1/share/java/opencv4/opencv-410.jar" path-in-jar="/" />
-      <element id="library" level="project" name="opencv4" />
       <element id="extracted-dir" path="$PROJECT_DIR$/jSSC-2.8.0-Release/jssc.jar" path-in-jar="/" />
     </root>
   </artifact>

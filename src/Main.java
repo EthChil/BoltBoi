@@ -16,9 +16,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import static org.opencv.imgcodecs.Imgcodecs.imdecode;
-import static org.opencv.imgcodecs.Imgcodecs.imread;
-
+import static org.opencv.imgcodecs.Imgcodecs.*;
 
 
 public class Main {
@@ -34,7 +32,6 @@ public class Main {
     public static double fov = 45;
     public static double height = 5;
 
-    //static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
     static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
 
     public static void display(Mat gang){
@@ -105,7 +102,6 @@ public class Main {
 
         //serialPort.openPort();
 
-        //System.load("/usr/local/Cellar/opencv/4.1.0_1/share/java/libopencv_java410.dylib");
 
         //VARS
         double minSize = 2000;
@@ -120,11 +116,11 @@ public class Main {
         frame.setSize(700, 500);
         frame.add(image);
 
-        //VideoCapture cam = new VideoCapture();
-        //cam.open(0);
+        VideoCapture cam = new VideoCapture(0);
+        //cam.open("http://192.168.137.219:4747/mjpegfeed");
 
         Mat src = new Mat();
-        src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/screw4.jpg");
+        src = Imgcodecs.imread("C:\\Users\\Brian-Laptop\\Documents\\GitHub\\BoltBoi\\src\\screw4.jpg");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -161,9 +157,23 @@ public class Main {
             }
 
             //read a frame from the video in
-            //cam.read(src);
+            cam.read(src);
+            while(src.cols() == 0)
+                cam.read(src);
 
-            src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/src/screw4.jpg");
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            imwrite("gang.jpg", src);
+
+
+            System.out.println(src.cols());
+
+            //src = Imgcodecs.imread("C:\\Users\\Brian-Laptop\\Documents\\GitHub\\BoltBoi\\src\\screw4.jpg");
 
 
             //Mats needed for image processing
@@ -172,9 +182,8 @@ public class Main {
 
             //Image filter values
 
-
             //resize the image to decrease the strain on the CPU
-            Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
+            //Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
 
             //make the high and low filter values
             Scalar hsvLow = new Scalar(HSub, SSub, VSub);
@@ -219,14 +228,6 @@ public class Main {
 
 
 
-
-//            //Sort the contours by rough shape removing those that fall under a certain threshold
-//            for (int i = 0; i < contours2.size(); i++) {
-//                double val = Imgproc.matchShapes(contours2.get(i), contours1.get(0), 1, 0.0);
-//
-//                if (val > 600)
-//                    contours2.remove(i);
-//            }
 
             //variables for size based sorting
             double largest = 0;
@@ -287,40 +288,12 @@ public class Main {
             //System.out.println(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
 
 
-
-
-
-//            //draw the contour onto the output image
-//            Imgproc.drawContours(out, contours2, index, new Scalar(255, 0, 255), 2, 8, hierarchy, 0, new Point());
-//
-//            //Checks to ensure there is a contour
-//            if (index > -1) {
-//
-//                //variables for the different dimensions for the box
-//                int x = Imgproc.minAreaRect(contours2.get(index)).x;
-//                int y = Imgproc.minAreaRect(contours2.get(index)).y;
-//
-//                int width = Imgproc.minAreaRect(contours2.get(index)).width;
-//                int height = Imgproc.minAreaRect(contours2.get(index)).height;
-//
-//                //prints the NavX turn angle on the RAS Pi this goes through the GPIO pins
-//                System.out.println("angle to turn = " + (0.09375) * ((x + (width / 2)) - (out.cols() / 2)));
-//
-//                //places a rectangle over the output image
-//                Imgproc.rectangle(out, new Point(x, y), new Point(x + width, y + height), new Scalar(255, 128, 0), 2, 2,
-//                        0);
-//
-//            }
-
-
             display(out);
-
-
 
 
 //            wait 100ms to make the video viewable instead of quickly blinking past
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

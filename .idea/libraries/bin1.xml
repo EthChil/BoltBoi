@@ -1,9 +1,9 @@
 <component name="libraryTable">
-  <library name="opencv4">
+  <library name="bin1">
     <CLASSES />
     <JAVADOC />
     <NATIVE>
-      <root url="file:///usr/local/Cellar/opencv/4.1.0_1/share/java/opencv4" />
+      <root url="file://$USER_HOME$/Downloads/opencv/build/bin" />
     </NATIVE>
     <SOURCES />
   </library>
