@@ -163,13 +163,13 @@ public class Main {
 
 
             try {
-                Thread.sleep(2000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-            Imgcodecs.imwrite("test,jpg", src);
+            Imgcodecs.imwrite("test.jpg", src);
 
 
             System.out.println(src.cols());
