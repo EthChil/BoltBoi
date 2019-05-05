@@ -95,21 +95,34 @@ public class Main {
             //copy the original image to the output Mat that the contours are overlayed to
             src.copyTo(out);
 
-            //Sort the contours by rough shape removing those that fall under a certain threshold
+//            //Sort the contours by rough shape removing those that fall under a certain threshold
+//            for (int i = 0; i < contours2.size(); i++) {
+//                double val = Imgproc.matchShapes(contours2.get(i), contours1.get(0), 1, 0.0);
+//
+//                if (val > 600)
+//                    contours2.remove(i);
+//            }
+
+//            //variables for size based sorting
+//            double largest = 0;
+//            int index = -1;
+//
+//            //Sort out the biggest contours
+//            for (int i = 0; i < contours2.size(); i++) {
+//                double size = Imgproc.boundingRect(contours2.get(i)).width;
+//
+//                if (size > largest) {
+//                    index = i;
+//                    largest = size;
+//                }
+//
+//            }
+
+            //Sort contours based on aspect ratio
+
             for (int i = 0; i < contours2.size(); i++) {
-                double val = Imgproc.matchShapes(contours2.get(i), contours1.get(0), 1, 0.0);
-
-                if (val > 600)
-                    contours2.remove(i);
-            }
-
-            //variables for size based sorting
-            double largest = 0;
-            int index = -1;
-
-            //Sort out the biggest contours
-            for (int i = 0; i < contours2.size(); i++) {
-                double size = Imgproc.boundingRect(contours2.get(i)).width;
+                double sizeX = Imgproc.boundingRect(contours2.get(i)).width;
+                double sizeY = Imgproc.boundingRect(contours2.get(i)).width;
 
                 if (size > largest) {
                     index = i;
@@ -140,7 +153,7 @@ public class Main {
 
             }
 
-            display(dst);
+            display(out);
 
             //wait 100ms to make the video viewable instead of quickly blinking past
             try {
