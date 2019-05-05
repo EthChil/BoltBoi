@@ -100,6 +100,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        //UNCOMMENT FOR SERIAL
         //serialPort.openPort();
 
 
@@ -117,21 +118,20 @@ public class Main {
         frame.add(image);
 
         VideoCapture cam = new VideoCapture(0);
-        //cam.open("http://192.168.137.219:4747/mjpegfeed");
 
         Mat src = new Mat();
-        src = Imgcodecs.imread("C:\\Users\\Brian-Laptop\\Documents\\GitHub\\BoltBoi\\src\\screw4.jpg");
+        src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/test.jpg");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int VSub, VAdd, SSub, SAdd, HSub, HAdd;
 
-        VSub = 0;
+        VSub = 50;
         VAdd = 150;
-        SSub = 0;
-        SAdd = 90;
+        SSub = 50;
+        SAdd = 100;
         HSub = 0;
-        HAdd = 110;
+        HAdd = 80;
 
         String text = "";
 
@@ -146,8 +146,8 @@ public class Main {
 
 
             if (splited.length >= 2){
-                //VSub = Integer.parseInt(splited[0]);
-                //VAdd = Integer.parseInt(splited[1]);
+                VSub = Integer.parseInt(splited[0]);
+                VAdd = Integer.parseInt(splited[1]);
 
                 //SSub = Integer.parseInt(splited[0]);
                 //SAdd = Integer.parseInt(splited[1]);
@@ -162,19 +162,8 @@ public class Main {
                 cam.read(src);
 
 
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
 
-            Imgcodecs.imwrite("test.jpg", src);
-
-
-            System.out.println(src.cols());
-
-            //src = Imgcodecs.imread("C:\\Users\\Brian-Laptop\\Documents\\GitHub\\BoltBoi\\src\\screw4.jpg");
+            //src = Imgcodecs.imread("/Users/Kratos/Documents/BoltBoi/test.jpg");
 
 
             //Mats needed for image processing
@@ -263,7 +252,7 @@ public class Main {
                 if(Imgproc.minAreaRect(dank).size.area() > minSize) {
                     Point[] vertices = new Point[4];
                     Imgproc.minAreaRect(dank).points(vertices);
-                    //System.out.println(determineBolt(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols())) + " y = " + Double.toString(Imgproc.minAreaRect(dank).center.y));
+//                    System.out.println(determineBolt(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols())) + " y = " + Double.toString(Imgproc.minAreaRect(dank).center.y));
 
                     //System.out.println("Size = " + Double.toString(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols())) +
                     //        " AR = " + determineAR(Imgproc.minAreaRect(dank).size.width, Imgproc.minAreaRect(dank).size.height) +
