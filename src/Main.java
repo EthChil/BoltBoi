@@ -29,8 +29,8 @@ public class Main {
 
     public static JLabel image = new JLabel();
 
-    public static double fov = 45;
-    public static double height = 5;
+    public static double fov = 71.6;
+    public static double height = 5.2;
 
     static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
 
@@ -161,14 +161,15 @@ public class Main {
             while(src.cols() == 0)
                 cam.read(src);
 
+
             try {
-                Thread.sleep(30000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-            imwrite("gang.jpg", src);
+            Imgcodecs.imwrite("test,jpg", src);
 
 
             System.out.println(src.cols());
@@ -184,6 +185,7 @@ public class Main {
 
             //resize the image to decrease the strain on the CPU
             //Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
+
 
             //make the high and low filter values
             Scalar hsvLow = new Scalar(HSub, SSub, VSub);
