@@ -1,11 +1,28 @@
 import jssc.SerialPortException;
 import org.opencv.core.*;
+import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
+
+import java.awt.*;
+import java.awt.event.InputEvent;
 import java.io.*;
 import java.util.*;
 import jssc.SerialPort;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -16,16 +33,78 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import java.io.File;
+
 import static org.opencv.imgcodecs.Imgcodecs.*;
 
 
 public class Main {
+    public static void takeScreenShot(String screenShotName) throws AWTException, IOException {
 
-    //Change this
-    public static SerialPort serialPort = new SerialPort("/dev/cu.usbmodem14101");
+        Robot robot = new Robot();
+        String path = "C:\\Users\\Brian-Laptop\\Downloads";
+        String extension  = "jpg";
+        String fileName = path +"\\"+ screenShotName +"."+ extension;
+
+        Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
+        ImageIO.write(screenFullImage, extension , new File(fileName));
+
+    }
+
+
+    public static void click(int x, int y, String s) throws AWTException{
+        Robot bot = new Robot();
+
+//        bot.mouseMove(x, y);
+//
+//
+//        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+//        bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+
+        bot.keyPress(KeyEvent.VK_CONTROL);
+        bot.keyPress(KeyEvent.VK_L);
+// CTRL+Z is now pressed (receiving application should see a "key down" event.)
+        bot.keyRelease(KeyEvent.VK_L);
+        bot.keyRelease(KeyEvent.VK_CONTROL);
+//        leftClick();
+        bot.delay(100);
+
+        bot.keyPress(KeyEvent.VK_CONTROL);
+        bot.keyPress(KeyEvent.VK_V);
+// CTRL+Z is now pressed (receiving application should see a "key down" event.)
+        bot.keyRelease(KeyEvent.VK_V);
+        bot.keyRelease(KeyEvent.VK_CONTROL);
+
+        bot.delay(200);
+
+        bot.keyPress(KeyEvent.VK_ENTER);
+        bot.keyRelease(KeyEvent.VK_ENTER);
+
+        bot.delay(400);
+
+        byte[] bytes = s.getBytes();
+        for (byte b : bytes)
+        {
+            int code = b;
+            // keycode only handles [A-Z] (which is ASCII decimal [65-90])
+            if (code > 96 && code < 123) code = code - 32;
+            bot.delay(40);
+            bot.keyPress(code);
+            bot.keyRelease(code);
+        }
+        bot.delay(250);
+
+        bot.keyPress(KeyEvent.VK_ENTER);
+        bot.keyRelease(KeyEvent.VK_ENTER);
+    }
+
+
+
+    public static SerialPort serialPort = new SerialPort("COM21");
 
     //Bolt sizes in ints
-    public static double[] sizing = new double[]{ 0.165, 0.295, 0.712, 0.985};
+    public static double[] sizing = new double[]{ 0.191, 0.311, 0.458, 0.5654};
     public static double[] ARs = new double[]{2.218, 1.831, 4.440, 5.1};
 
     public static JLabel image = new JLabel();
@@ -73,11 +152,11 @@ public class Main {
     }
 
     public static double determineAR(double sizeX, double sizeY){
-                    double ARy = sizeX / sizeY;
-                    double ARx = sizeY / sizeX;
+        double ARy = sizeX / sizeY;
+        double ARx = sizeY / sizeX;
 
-                    double AR = (ARy > ARx) ? ARy : ARx;
-            return AR;
+        double AR = (ARy > ARx) ? ARy : ARx;
+        return AR;
     }
 
 
@@ -101,12 +180,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        //UNCOMMENT FOR SERIAL
-        //serialPort.openPort();
+        serialPort.openPort();
 
 
         //VARS
-        double minSize = 2000;
+        double minSize = 500;
+        double maxSize = 5000;
 
 
         JFrame frame = new JFrame("output");
@@ -118,21 +197,22 @@ public class Main {
         frame.setSize(700, 500);
         frame.add(image);
 
-//        VideoCapture cam = new VideoCapture(0);
+        VideoCapture cam = new VideoCapture(0);
+        //cam.open("http://192.168.137.219:4747/mjpegfeed");
 
         Mat src = new Mat();
-        src = Imgcodecs.imread("C:\\Users\\ethan\\Documents\\GitHub\\BoltBoi\\src\\Screw6.jpg");
+        src = Imgcodecs.imread("C:\\Users\\Brian-Laptop\\Downloads\\jamhacks.jpg");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int VSub, VAdd, SSub, SAdd, HSub, HAdd;
 
-        VSub = 0;
+        VSub = 190;
         VAdd = 255;
-        SSub = 25;
-        SAdd = 125;
-        HSub = 25;
-        HAdd = 110;
+        SSub = 190;
+        SAdd = 255;
+        HSub = 140;
+        HAdd = 255;
 
         String text = "";
 
@@ -153,19 +233,37 @@ public class Main {
                 //SSub = Integer.parseInt(splited[0]);
                 //SAdd = Integer.parseInt(splited[1]);
 
-                HSub = Integer.parseInt(splited[0]);
-                HAdd = Integer.parseInt(splited[1]);
+                //HSub = Integer.parseInt(splited[0]);
+                //HAdd = Integer.parseInt(splited[1]);
             }
 
             //read a frame from the video in
-//            cam.read(src);
-//            while(src.cols() == 0)
-//                cam.read(src);
+            cam.read(src);
+            while(src.cols() == 0)
+                cam.read(src);
 
 
+            try {
 
-            src = Imgcodecs.imread("C:\\Users\\ethan\\Documents\\GitHub\\BoltBoi\\src\\Screw6.jpg");
+//                takeScreenShot("jamhacks");
+                click(340,80, "jamhacks");
+                Thread.sleep(3000);
 
+
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            Imgcodecs.imwrite("test.jpg", src);
+
+
+            System.out.println(src.cols());
+
+            src = Imgcodecs.imread("C:\\Users\\Brian-Laptop\\Downloads\\jamhacks.jpg");
+
+
+            Core.flip(src, src, -1);
 
             //Mats needed for image processing
             Mat dst = new Mat();
@@ -174,10 +272,9 @@ public class Main {
             //Image filter values
 
             //resize the image to decrease the strain on the CPU
-            Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
+//            Imgproc.resize(src, src, new Size(src.cols() /4 , src.rows() / 4));
 
             Mat lol = src.colRange(0, src.cols() - (src.cols()/3));
-
 
             //make the high and low filter values
             Scalar hsvLow = new Scalar(HSub, SSub, VSub);
@@ -186,7 +283,7 @@ public class Main {
             //filter the image by Hue Saturation and Value then save the mask into dst
             Core.inRange(lol, hsvLow, hsvHigh, dst);
 
-            display(dst);
+            //display(dst);
 
             //contour array lists
             ArrayList<MatOfPoint> contours1 = new ArrayList<MatOfPoint>();
@@ -235,9 +332,6 @@ public class Main {
                 if (size < 500) {
                     contours2.remove(i);
                 }
-                else if(Imgproc.boundingRect(contours2.get(i)).x > 300){
-                    contours2.remove(i);
-                }
             }
 
 
@@ -255,14 +349,14 @@ public class Main {
                 MatOfPoint2f dank = new MatOfPoint2f();
                 contours2.get(i).convertTo(dank, CvType.CV_32F);
 
-                if(Imgproc.minAreaRect(dank).size.area() > minSize) {
+                if(Imgproc.minAreaRect(dank).size.area() > minSize && Imgproc.minAreaRect(dank).size.area() < maxSize) {
                     Point[] vertices = new Point[4];
                     Imgproc.minAreaRect(dank).points(vertices);
-//                    System.out.println(determineBolt(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols())) + " y = " + Double.toString(Imgproc.minAreaRect(dank).center.y));
+                    //System.out.println(determineBolt(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols())) + " y = " + Double.toString(Imgproc.minAreaRect(dank).center.y));
 
-                    //System.out.println("Size = " + Double.toString(calcSize(Imgproc.minAreaRect(dank).size.width, src.cols())) +
-                    //        " AR = " + determineAR(Imgproc.minAreaRect(dank).size.width, Imgproc.minAreaRect(dank).size.height) +
-                    //       " y = " + Double.toString(Imgproc.minAreaRect(dank).center.y));
+//                    System.out.println("Size = " + Double.toString(calcSize(Imgproc.minAreaRect(dank).size.height, src.cols())) +
+//                            " AR = " + determineAR(Imgproc.minAreaRect(dank).size.height, Imgproc.minAreaRect(dank).size.height) +
+//                           " y = " + Double.toString(Imgproc.minAreaRect(dank).center.y));
 
                     for (int j = 0; j < 4; j++) {
                         Imgproc.line(out, vertices[j], vertices[(j + 1) % 4], new Scalar(0, 255, 0));
@@ -277,20 +371,22 @@ public class Main {
                 }
             }
 
-            //System.out.println("xPosFarRight = " + Double.toString(furthestRight));
-            //System.out.println("yPosFarRight = " + Double.toString(furthestRightY));
-            //System.out.println("furthestRightBoltSize = " + Double.toString(furthestRightBolt) + (Double.toString(furthestRight/3)));
+            System.out.println("xPosFarRight = " + Double.toString(furthestRight));
+            System.out.println("yPosFarRight = " + Double.toString(furthestRightY));
+            System.out.println("furthestRightBoltSize = " + Double.toString(furthestRightBolt) + (Double.toString(furthestRight/3)));
 
-            //sendMessage(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
-            //System.out.println(Integer.toString((int)(furthestRightBolt + (furthestRight / 3.0))));
+            sendMessage(Integer.toString((int)(furthestRightBolt)));
+            System.out.println(Integer.toString((int)(furthestRightBolt + (furthestRight / 100.0))));
 
 
-            //display(out);
+            display(out);
 
 
 //            wait 100ms to make the video viewable instead of quickly blinking past
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
+                File file = new File("C:\\Users\\Brian-Laptop\\Downloads\\jamhacks.jpg");
+                file.delete();
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

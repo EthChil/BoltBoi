@@ -22,11 +22,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="134" column="18" selection-start-line="134" selection-start-column="18" selection-end-line="134" selection-end-column="18" />
+            <state relative-caret-position="6103">
+              <caret line="396" selection-start-line="396" selection-end-line="396" />
               <folding>
-                <element signature="e#5439#5451#0" expanded="true" />
-                <element signature="e#5555#5567#0" expanded="true" />
+                <element signature="e#8250#8262#0" expanded="true" />
+                <element signature="e#8366#8378#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -169,7 +169,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30358000" />
+    <option name="totallyTimeSpent" value="34386000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -216,11 +216,11 @@
     <entry file="jar:///usr/local/Cellar/opencv/HEAD-4fd00c1_4/share/OpenCV/java/opencv-310.jar!/org/opencv/videoio/VideoCapture.java" />
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="134" column="18" selection-start-line="134" selection-start-column="18" selection-end-line="134" selection-end-column="18" />
+        <state relative-caret-position="6103">
+          <caret line="396" selection-start-line="396" selection-end-line="396" />
           <folding>
-            <element signature="e#5439#5451#0" expanded="true" />
-            <element signature="e#5555#5567#0" expanded="true" />
+            <element signature="e#8250#8262#0" expanded="true" />
+            <element signature="e#8366#8378#0" expanded="true" />
           </folding>
         </state>
       </provider>
